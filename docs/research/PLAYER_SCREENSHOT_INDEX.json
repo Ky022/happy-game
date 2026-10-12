@@ -1,0 +1,62 @@
+[
+  {
+    "index": 1,
+    "source": "https://img2-tc.tapimg.com/moment/etag/Fvx2HlonAzE-kpv3FPgKrvI9EkkG_20261012094457.jpg/_tap_ugc.jpg",
+    "observed": "幻兽列表与编队",
+    "sha256": "777ebf1cf64a8246be66b6d5ad479bb9bb617e2047ddd19a8597077e99bd64f4"
+  },
+  {
+    "index": 2,
+    "source": "https://img2-tc.tapimg.com/moment/etag/FlJ8LjBLid2ukzUiSG1rjIMYJ7Bt_20261012094458.jpg/_tap_ugc.jpg",
+    "observed": "多层职业树",
+    "sha256": "a235d09301c7c20a7c13b4d99bb09f128250d09a59954fe5e9b8ac3597f18aa1"
+  },
+  {
+    "index": 3,
+    "source": "https://img2-tc.tapimg.com/moment/etag/FgjZppo2PO4xKgydjoXtRtwgLHkD_20261012094500.jpg/_tap_ugc.jpg",
+    "observed": "职业详情与技能图标",
+    "sha256": "44237c63ef61467b1142f3c32d19bd8906d7401b07cfbc28d4c878ac87965fbd"
+  },
+  {
+    "index": 4,
+    "source": "https://img2-tc.tapimg.com/moment/etag/FlpkXC40yl277lyYEuUJMEBNFhKy_20261012094501.jpg/_tap_ugc.jpg",
+    "observed": "国度遗物系列选择（羽之国、哈帕迪）",
+    "sha256": "f63eb885f5ddb16d421123e1e5e622fcda4568c2605c10565c1f1a8badcf6ed4"
+  },
+  {
+    "index": 5,
+    "source": "https://img2-tc.tapimg.com/moment/etag/FoxkZaVAI40wD0jP9ZSMJMhoC_bR_20261012094503.jpg/_tap_ugc.jpg",
+    "observed": "国度遗物系列选择（山、泽、龙、羽）",
+    "sha256": "9d6a790164f1b080bc59a46ac878e277883aca86c0b3506171dcc1a4b8338847"
+  },
+  {
+    "index": 6,
+    "source": "https://img2-tc.tapimg.com/moment/etag/FmYyKl0KYgQLJNbsGkRSUMxWCkfb_20261012094504.jpg/_tap_ugc.jpg",
+    "observed": "杖装备详情",
+    "sha256": "abde79ec7eaa4c55894c10e2a68a9e59435bc7084c1c1f342eb1e2b0af5a8388"
+  },
+  {
+    "index": 7,
+    "source": "https://img2-tc.tapimg.com/moment/etag/Fgbyaxfydq_Zn8v1DCjrm7E2KIjx_20261012094505.jpg/_tap_ugc.jpg",
+    "observed": "法书装备详情",
+    "sha256": "cb58df4b258ea2a8f741f122a63a22ba1283df1ad597bf710eab7b768d4cef64"
+  },
+  {
+    "index": 8,
+    "source": "https://img2-tc.tapimg.com/moment/etag/Fs6JtXJLXC26v1mQ0MWx7TQEklox_20261012094507.jpg/_tap_ugc.jpg",
+    "observed": "头盔装备详情",
+    "sha256": "4bb17e7d520add86df45715aea82a397dd16704452994f21323122494a3af3bd"
+  },
+  {
+    "index": 9,
+    "source": "https://img2-tc.tapimg.com/moment/etag/FhB9NiRdIJOVkEx1PPng4oJxbBHS_20261012094508.jpg/_tap_ugc.jpg",
+    "observed": "铠甲装备详情",
+    "sha256": "2c2ed3ac6cdeebc566b56fc5cacca9a47385cdb1a266dbe55d8baaae3c907649"
+  },
+  {
+    "index": 10,
+    "source": "https://img2-tc.tapimg.com/moment/etag/FjuFxY2jZBKzUty6fbv1f1fUNo4O_20261012094509.jpg/_tap_ugc.jpg",
+    "observed": "战靴装备详情",
+    "sha256": "b18ee0810a914e87c0bef1141bbcb2e0a4ac0864e554ebb1d4a9f2cfc904c51c"
+  }
+]
