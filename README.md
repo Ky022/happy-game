@@ -1,8 +1,10 @@
-# 雾谷纪行 0.3 — 探索重做
+# 雾谷纪行 0.4 — 界面与幻兽编队
 
 线上：https://mistvale-friends.astral-cards.workers.dev/
 
-本次把节点路线改为 11×15 方格世界，加入可行走角色、树林/河流碰撞、迷雾揭开、地点交互距离、独立账号地图记录。战斗改为格子场景展示和实际血量差产生的伤害数字，角色换为原创 Q 版 SVG。目标是逐步接近国服《杖剑传说》的探索体验，不宣称完整还原。
+0.4根据已核对的国服玩家截图重做冒险笔记、五主导航、集中式角色面板和养成导航，增加主宠/三个副宠/收藏编队；加成实际进入属性与服务器战斗，并兼容旧存档。对照和缺口见 [实现比较](docs/research/IMPLEMENTATION_COMPARISON.md)。
+
+0.3把节点路线改为 11×15 方格世界，加入可行走角色、树林/河流碰撞、迷雾揭开、地点交互距离、独立账号地图记录。战斗改为格子场景展示和实际血量差产生的伤害数字，角色换为原创 Q 版 SVG。目标是逐步接近国服《杖剑传说》的探索体验，不宣称完整还原。
 
 账号、公会、好友、聊天、组队和 PvP 保持原数据库与 Durable Object 标识。新探索资料存入新增 exploration 表，不覆盖人物存档。
 
@@ -14,7 +16,7 @@
 
 ```sh
 npm ci
-npm run dev
+XDG_CONFIG_HOME=/tmp/mistvale-xdg WRANGLER_SEND_METRICS=false npm run dev
 ```
 
 本地浏览器访问 http://127.0.0.1:5173 。测试使用本地服务，勿对真实玩家数据库执行注册和战斗测试。
@@ -22,6 +24,7 @@ npm run dev
 ```sh
 npm run check
 npm test
+node tests/interface-browser.mjs
 node tests/browser.mjs
 node tests/online-regression.mjs
 ```

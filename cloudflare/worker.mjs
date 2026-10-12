@@ -1,3 +1,4 @@
+import {normalizeSupports,formationBonus,setMainPet,toggleSupport} from '../pet-rules.js';
 import {createWorldApi} from './world-api.mjs';
 var __defProp = Object.defineProperty;
 var __name = (target, value) => __defProp(target, "name", { value, configurable: true });
@@ -73,7 +74,7 @@ function regionOpen(s, id) {
 }
 __name(regionOpen, "regionOpen");
 function freshState(now = Date.now()) {
-  return { version: 1, name: "\u65C5\u4EBA", class: "knight", level: 1, xp: 0, gold: 240, gems: 300, tickets: 3, completed: ["camp"], selected: "camp", region: 1, equipped: ["slash", "guard", "heal", "strike"], passives: ["vital", "fury"], skillLevels: {}, pet: "fox", ownedPets: { fox: 1 }, gear: { weapon: 1, armor: 1, charm: 1 }, relic: 0, shards: 0, inventory: [], lastClaim: now, arenaWins: 0, arenaPlays: 0, pity: 0, draws: 0, questClaims: [], daily: { date: "", battles: 0, draws: 0, claims: [] }, tower: 0, created: false };
+  return { version: 1, name: "\u65C5\u4EBA", class: "knight", level: 1, xp: 0, gold: 240, gems: 300, tickets: 3, completed: ["camp"], selected: "camp", region: 1, equipped: ["slash", "guard", "heal", "strike"], passives: ["vital", "fury"], skillLevels: {}, pet: "fox", supportPets: [], ownedPets: { fox: 1 }, gear: { weapon: 1, armor: 1, charm: 1 }, relic: 0, shards: 0, inventory: [], lastClaim: now, arenaWins: 0, arenaPlays: 0, pity: 0, draws: 0, questClaims: [], daily: { date: "", battles: 0, draws: 0, claims: [] }, tower: 0, created: false };
 }
 __name(freshState, "freshState");
 function sanitizeState(raw, now = Date.now()) {
@@ -101,6 +102,7 @@ function sanitizeState(raw, now = Date.now()) {
   s.ownedPets = { fox: 1 };
   for (const p of pets) if (Number.isFinite(raw.ownedPets?.[p.id]) && raw.ownedPets[p.id] > 0) s.ownedPets[p.id] = Math.min(50, Math.floor(raw.ownedPets[p.id]));
   s.pet = s.ownedPets[raw.pet] ? raw.pet : "fox";
+  s.supportPets = normalizeSupports(s,raw.supportPets);
   s.questClaims = Array.isArray(raw.questClaims) ? raw.questClaims.filter((x) => ["explore", "boss", "draw"].includes(x)) : [];
   s.created = raw.created === true;
   return s;
@@ -108,6 +110,7 @@ function sanitizeState(raw, now = Date.now()) {
 __name(sanitizeState, "sanitizeState");
 function stats(s) {
   let hp = 180 + s.level * 28 + s.gear.armor * 24 + (s.relic || 0) * 12, atk = 25 + s.level * 7 + s.gear.weapon * 8 + (s.relic || 0) * 3, def = 3 + s.gear.armor * 3 + s.gear.charm;
+  const bonus = formationBonus(s);hp += bonus.hp;atk += bonus.atk;def += bonus.def;
   if (s.passives.includes("vital")) hp = Math.round(hp * 1.15);
   if (s.passives.includes("fury")) atk = Math.round(atk * 1.12);
   return { hp, atk, def, power: Math.round(hp * 0.8 + atk * 9 + def * 12 + Object.values(s.gear).reduce((a, b) => a + b, 0) * 15 + (s.ownedPets[s.pet] || 1) * 40 + s.equipped.reduce((a, id) => a + (s.skillLevels[id] || 1) * 20, 0)) };
@@ -498,7 +501,9 @@ function createService(db, scheduler) {
         s.skillLevels[a] = level + 1;
       } else if (verb === "pet") {
         if (!s.ownedPets[a]) fail("\u5C1A\u672A\u62E5\u6709\u6B64\u5E7B\u517D");
-        s.pet = a;
+        setMainPet(s,a);
+      } else if (verb === "support") {
+        const error = toggleSupport(s,a);if(error)fail(error);
       } else if (verb === "draw") {
         const draw = drawPet(s, rng);
         if (!draw) fail("\u661F\u613F\u5238\u4E0E\u661F\u6676\u4E0D\u8DB3");
@@ -893,7 +898,7 @@ function createService(db, scheduler) {
       }
       const pathname = url.pathname;
       const token = (req.headers.cookie || "").split(";").map((s) => s.trim()).find((s) => s.startsWith("mistvale_session="))?.slice(17) || "";
-      if (pathname === "/api/health") return send(200, { ok: true, version: "0.3.0", storage: "sqlite" });
+      if (pathname === "/api/health") return send(200, { ok: true, version: "0.4.0", storage: "sqlite" });
       if (["/api/auth/register", "/api/auth/login"].includes(pathname) && mutating) {
         const result = await (pathname.endsWith("register") ? register(input) : login(input));
         const secure = true ? "; Secure" : "";

@@ -1,3 +1,4 @@
+import {normalizeSupports,formationBonus} from './pet-rules.js';
 export const SAVE_KEY = 'mistvale-save-v1';
 export const classes = {knight:{name:'逐风骑士',icon:'shield',level:1},mage:{name:'星火术士',icon:'spark',level:1},fighter:{name:'赤焰斗士',icon:'sword',level:3},sage:{name:'月露贤者',icon:'leaf',level:3}};
 export const skills = [
@@ -59,7 +60,7 @@ for(const r of regions.slice(1)){const i=r.id;nodes.push(
  {id:`r${i}-boss`,region:i,name:['','','潮汐巨灵','赤砂龙卫','星霜领主'][i],kind:'boss',x:52,y:14,need:`r${i}-ruins`,hp:600*i,atk:35+15*i,xp:200*i,gold:220*i,desc:'本区域的最终挑战。胜利将打开新的冒险。'}
 );}
 export function regionOpen(s,id){return id===1||s.completed.includes(regions[id-2]?.boss);}
-export function freshState(now=Date.now()) { return {version:1,name:'旅人',class:'knight',level:1,xp:0,gold:240,gems:300,tickets:3,completed:['camp'],selected:'camp',region:1,equipped:['slash','guard','heal','strike'],passives:['vital','fury'],skillLevels:{},pet:'fox',ownedPets:{fox:1},gear:{weapon:1,armor:1,charm:1},relic:0,shards:0,inventory:[],lastClaim:now,arenaWins:0,arenaPlays:0,pity:0,draws:0,questClaims:[],daily:{date:'',battles:0,draws:0,claims:[]},tower:0,created:false}; }
+export function freshState(now=Date.now()) { return {version:1,name:'旅人',class:'knight',level:1,xp:0,gold:240,gems:300,tickets:3,completed:['camp'],selected:'camp',region:1,equipped:['slash','guard','heal','strike'],passives:['vital','fury'],skillLevels:{},pet:'fox',supportPets:[],ownedPets:{fox:1},gear:{weapon:1,armor:1,charm:1},relic:0,shards:0,inventory:[],lastClaim:now,arenaWins:0,arenaPlays:0,pity:0,draws:0,questClaims:[],daily:{date:'',battles:0,draws:0,claims:[]},tower:0,created:false}; }
 export function sanitizeState(raw,now=Date.now()) {
  const base=freshState(now); if(!raw||raw.version!==1) return base;
  const s={...base};
@@ -77,10 +78,11 @@ export function sanitizeState(raw,now=Date.now()) {
  for(const k of ['weapon','armor','charm'])s.gear[k]=Math.max(1,Math.min(50,Math.floor(Number(raw.gear?.[k])||1)));
  for(const k of skills)s.skillLevels[k.id]=Math.max(1,Math.min(20,Math.floor(Number(raw.skillLevels?.[k.id])||1)));
  s.ownedPets={fox:1};for(const p of pets)if(Number.isFinite(raw.ownedPets?.[p.id])&&raw.ownedPets[p.id]>0)s.ownedPets[p.id]=Math.min(50,Math.floor(raw.ownedPets[p.id]));
- s.pet=s.ownedPets[raw.pet]?raw.pet:'fox';s.questClaims=Array.isArray(raw.questClaims)?raw.questClaims.filter(x=>['explore','boss','draw'].includes(x)):[];s.created=raw.created===true; return s;
+ s.pet=s.ownedPets[raw.pet]?raw.pet:'fox';s.supportPets=normalizeSupports(s,raw.supportPets);s.questClaims=Array.isArray(raw.questClaims)?raw.questClaims.filter(x=>['explore','boss','draw'].includes(x)):[];s.created=raw.created===true; return s;
 }
 export function stats(s) {
  let hp=180+s.level*28+s.gear.armor*24+(s.relic||0)*12,atk=25+s.level*7+s.gear.weapon*8+(s.relic||0)*3,def=3+s.gear.armor*3+s.gear.charm;
+ const bonus=formationBonus(s);hp+=bonus.hp;atk+=bonus.atk;def+=bonus.def;
  if(s.passives.includes('vital'))hp=Math.round(hp*1.15);if(s.passives.includes('fury'))atk=Math.round(atk*1.12);
  return {hp,atk,def,power:Math.round(hp*.8+atk*9+def*12+Object.values(s.gear).reduce((a,b)=>a+b,0)*15+(s.ownedPets[s.pet]||1)*40+s.equipped.reduce((a,id)=>a+(s.skillLevels[id]||1)*20,0))};
 }
