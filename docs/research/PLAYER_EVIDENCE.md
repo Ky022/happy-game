@@ -77,3 +77,5 @@ https://www.taptap.cn/moment/858446316299092315 （36秒视频入口与多敌人
 https://www.taptap.cn/moment/858514438079120402 （66秒视频入口与对战相关配图）
 
 完整视频流尚未取得。新发现的三个视频元数据时长分别为36、66、62秒；取得元数据不是播放证明。Chromium普通访问出现证书信任错误，未通过关闭验证绕过；图文仍通过保持TLS校验的请求读取。
+
+播放器检查补充：通过保留TLS校验的 Playwright APIRequestContext 成功读取页面并向浏览器提供资源；未关闭证书校验。页面存在 video-tool-widget-player，但没有创建 video 元素，assets.tapimg.com 等播放器脚本请求返回403。仍不能把页面读取或封面查看称为视频播放。未自动扩大网络权限。
